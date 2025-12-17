@@ -36,6 +36,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         setUserProfile(null);
                     }
                     setLoading(false);
+                }, (error) => {
+                    console.error("AuthContext Profile Error:", error);
+                    setUserProfile(null);
+                    setLoading(false);
                 });
 
                 return () => {
