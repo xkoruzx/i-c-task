@@ -29,6 +29,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClaim, onFinish, onR
 
     // Snapshot logic
     const displayName = task.assigneeSnapshot?.displayName || task.assignedToName || 'Unassigned';
+    const avatarUrl = task.assigneeSnapshot?.avatarUrl;
     const avatarId = task.assigneeSnapshot?.avatarId;
     const isAssigned = !!task.assignedTo;
 
@@ -69,12 +70,20 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClaim, onFinish, onR
                 <div className="flex items-center gap-2 max-w-[50%]">
                     {isAssigned ? (
                         <>
-                            {avatarId ? (
-                                <AsyncImage
-                                    imageId={avatarId}
-                                    alt={displayName}
-                                    className="w-7 h-7 rounded-full object-cover ring-2 ring-white shadow-sm" // Ring for sticker effect
-                                />
+                            {avatarUrl || avatarId ? (
+                                avatarUrl ? (
+                                    <img
+                                        src={avatarUrl}
+                                        alt={displayName}
+                                        className="w-7 h-7 rounded-full object-cover ring-2 ring-white shadow-sm"
+                                    />
+                                ) : (
+                                    <AsyncImage
+                                        imageId={avatarId!}
+                                        alt={displayName}
+                                        className="w-7 h-7 rounded-full object-cover ring-2 ring-white shadow-sm" // Ring for sticker effect
+                                    />
+                                )
                             ) : (
                                 <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-[10px] text-gray-400 font-bold ring-2 ring-white">
                                     {displayName.charAt(0).toUpperCase()}

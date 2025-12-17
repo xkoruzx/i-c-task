@@ -121,12 +121,20 @@ export default function AttendancePage() {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex justify-between items-start mb-1">
                                             <div className="flex items-center gap-2">
-                                                {log.userAvatarId ? (
-                                                    <AsyncImage
-                                                        imageId={log.userAvatarId}
-                                                        alt={log.userName}
-                                                        className="w-6 h-6 rounded-full object-cover ring-2 ring-white"
-                                                    />
+                                                {(log.userAvatarUrl || log.userAvatarId) ? (
+                                                    log.userAvatarUrl ? (
+                                                        <img
+                                                            src={log.userAvatarUrl}
+                                                            alt={log.userName}
+                                                            className="w-6 h-6 rounded-full object-cover ring-2 ring-white"
+                                                        />
+                                                    ) : (
+                                                        <AsyncImage
+                                                            imageId={log.userAvatarId!}
+                                                            alt={log.userName}
+                                                            className="w-6 h-6 rounded-full object-cover ring-2 ring-white"
+                                                        />
+                                                    )
                                                 ) : (
                                                     <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-[10px] font-bold ring-2 ring-white">
                                                         {log.userName.charAt(0).toUpperCase()}
@@ -136,7 +144,7 @@ export default function AttendancePage() {
                                             </div>
 
                                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${log.status === 'approved' ? 'bg-matcha-100 text-matcha-600' :
-                                                    log.status === 'rejected' ? 'bg-red-100 text-red-600' : 'bg-butter-100 text-butter-600'
+                                                log.status === 'rejected' ? 'bg-red-100 text-red-600' : 'bg-butter-100 text-butter-600'
                                                 }`}>
                                                 {log.status}
                                             </span>

@@ -70,15 +70,23 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({ lo
                     </div>
                 </div>
 
-                {log.proofId && (
+                {(log.proofImageUrl || log.proofId) && (
                     <div>
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">Proof of Leave</h3>
                         <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-                            <AsyncImage
-                                imageId={log.proofId}
-                                alt="Leave Proof"
-                                className="w-full h-auto max-h-64 object-contain"
-                            />
+                            {log.proofImageUrl ? (
+                                <img
+                                    src={log.proofImageUrl}
+                                    alt="Leave Proof"
+                                    className="w-full h-auto max-h-64 object-contain"
+                                />
+                            ) : (
+                                <AsyncImage
+                                    imageId={log.proofId!}
+                                    alt="Leave Proof"
+                                    className="w-full h-auto max-h-64 object-contain"
+                                />
+                            )}
                         </div>
                     </div>
                 )}

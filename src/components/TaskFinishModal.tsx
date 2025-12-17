@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import { Task } from '@/types';
 import { X, Loader2, UploadCloud } from 'lucide-react';
-import { saveImageToStore } from '@/utils/imageUtils';
+import { uploadToCloudinary } from '@/utils/cloudinary';
 
 interface TaskFinishModalProps {
     task: Task;
     isOpen: boolean;
     onClose: () => void;
-    onConfirm: (taskId: string, proofId: string, comment: string) => Promise<void>;
+    onConfirm: (taskId: string, proofUrl: string, comment: string) => Promise<void>;
 }
 
 export const TaskFinishModal: React.FC<TaskFinishModalProps> = ({ task, isOpen, onClose, onConfirm }) => {
@@ -35,11 +35,11 @@ export const TaskFinishModal: React.FC<TaskFinishModalProps> = ({ task, isOpen, 
         setError('');
 
         try {
-            // 1. Save Image -> Get ID
-            const proofId = await saveImageToStore(file, 'task_proof', task.id);
+            // 1. Upload to Cloudinary
+            const proofUrl = await uploadToCloudinary(file);
 
             // 2. Update Task
-            await onConfirm(task.id, proofId, comment);
+            await onConfirm(task.id, proofUrl, comment);
 
             alert('Task Finished Successfully!');
             onClose();

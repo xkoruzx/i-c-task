@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { saveImageToStore } from '@/utils/imageUtils';
+import { uploadToCloudinary } from '@/utils/cloudinary';
 import { LeaveType } from '@/types';
 import { Loader2, UploadCloud } from 'lucide-react';
 
@@ -34,19 +34,21 @@ export const LeaveRequestForm = () => {
         setSuccess(false);
 
         try {
-            // 1. Save Image
-            const proofId = await saveImageToStore(file, 'attendance_proof', user.uid);
+            // 1. Upload to Cloudinary
+            const proofUrl = await uploadToCloudinary(file);
 
-            // 2. Save Log with Snapshots
+            // 2. Save Log with Cloudinary URL
             await addDoc(collection(db, "attendance_logs"), {
                 userId: user.uid,
                 userName: userProfile?.name || user.displayName || 'Unknown',
-                userAvatarId: userProfile?.avatarId || null, // Snapshot!
+                userAvatarUrl: userProfile?.avatarUrl,
+                userAvatarId: userProfile?.avatarId || null, // Legacy Snapshot
                 type,
                 startDate: Timestamp.fromDate(new Date(startDate)),
                 endDate: Timestamp.fromDate(new Date(endDate)),
                 reason,
-                proofId,
+                proofImageUrl: proofUrl, // Cloudinary URL
+                proofId: null, // Clear Legacy
                 status: 'pending',
                 createdAt: serverTimestamp()
             });

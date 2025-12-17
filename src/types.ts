@@ -6,7 +6,8 @@ export interface UserProfile {
     uid: string;
     name: string;
     email: string;
-    avatarId?: string; // Reference to image_store
+    avatarId?: string; // Reference to image_store (Legacy)
+    avatarUrl?: string; // Cloudinary URL
     role: UserRole;
 }
 
@@ -15,7 +16,8 @@ export type TaskPriority = 'low' | 'medium' | 'high';
 
 export interface AssigneeSnapshot {
     displayName: string;
-    avatarId?: string;
+    avatarId?: string; // Legacy
+    avatarUrl?: string;
 }
 
 export interface Task {
@@ -29,7 +31,8 @@ export interface Task {
     assigneeSnapshot?: AssigneeSnapshot; // For consistent UI rendering
     createdAt: Timestamp;
     completedAt?: Timestamp;
-    proofId?: string; // Reference to image_store
+    proofId?: string; // Reference to image_store (Legacy)
+    proofImageUrl?: string; // Cloudinary URL
     completionComment?: string;
 }
 
@@ -40,12 +43,14 @@ export interface AttendanceLog {
     id: string;
     userId: string;
     userName: string;
-    userAvatarId?: string; // Snapshot for UI
+    userAvatarId?: string; // Snapshot for UI (Legacy)
+    userAvatarUrl?: string; // Snapshot
     type: LeaveType;
     startDate: Timestamp;
     endDate: Timestamp;
     reason: string;
-    proofId?: string; // Reference to image_store
+    proofId?: string; // Reference to image_store (Legacy)
+    proofImageUrl?: string; // Cloudinary URL
     status: LeaveStatus;
     createdAt: Timestamp;
 }

@@ -79,6 +79,7 @@ export default function Home() {
         if (!user) return;
         const snapshot = {
             displayName: userProfile?.name || user.displayName || 'Unknown',
+            avatarUrl: userProfile?.avatarUrl,
             avatarId: userProfile?.avatarId
         };
         await updateDoc(doc(db, "tasks", task.id), {
@@ -106,12 +107,13 @@ export default function Home() {
         setFinishModalOpen(true);
     };
 
-    const handleConfirmFinish = async (taskId: string, proofId: string, comment: string) => {
+    const handleConfirmFinish = async (taskId: string, proofUrl: string, comment: string) => {
         if (!taskId) return;
         await updateDoc(doc(db, "tasks", taskId), {
             status: 'finished',
             completedAt: serverTimestamp(),
-            proofId: proofId,
+            proofImageUrl: proofUrl, // Cloudinary URL
+            proofId: null, // Clear legacy ID if any
             completionComment: comment
         });
         setSelectedTaskToFinish(null);
@@ -164,12 +166,20 @@ export default function Home() {
                         {/* User Profile */}
                         <div className="flex items-center gap-3">
                             <div className="flex items-center gap-2">
-                                {userProfile.avatarId ? (
-                                    <AsyncImage
-                                        imageId={userProfile.avatarId}
-                                        alt={userProfile.name}
-                                        className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
-                                    />
+                                {(userProfile?.avatarUrl || userProfile?.avatarId) ? (
+                                    userProfile.avatarUrl ? (
+                                        <img
+                                            src={userProfile.avatarUrl}
+                                            alt={userProfile.name}
+                                            className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
+                                        />
+                                    ) : (
+                                        <AsyncImage
+                                            imageId={userProfile.avatarId!}
+                                            alt={userProfile.name}
+                                            className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
+                                        />
+                                    )
                                 ) : (
                                     <div className="w-8 h-8 rounded-full bg-butter-100 flex items-center justify-center text-butter-600 font-bold border border-white shadow-sm">
                                         {userProfile.name?.charAt(0).toUpperCase()}

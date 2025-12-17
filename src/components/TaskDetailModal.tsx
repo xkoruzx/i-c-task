@@ -67,15 +67,23 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, isOpen, 
                     </div>
                 )}
 
-                {task.proofId && (
+                {(task.proofImageUrl || task.proofId) && (
                     <div>
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">Proof of Work</h3>
                         <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-                            <AsyncImage
-                                imageId={task.proofId}
-                                alt="Task Proof"
-                                className="w-full h-auto max-h-64 object-contain"
-                            />
+                            {task.proofImageUrl ? (
+                                <img
+                                    src={task.proofImageUrl}
+                                    alt="Task Proof"
+                                    className="w-full h-auto max-h-64 object-contain"
+                                />
+                            ) : (
+                                <AsyncImage
+                                    imageId={task.proofId!}
+                                    alt="Task Proof"
+                                    className="w-full h-auto max-h-64 object-contain"
+                                />
+                            )}
                         </div>
                     </div>
                 )}
