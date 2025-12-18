@@ -34,15 +34,7 @@ export const ImageWithZoom: React.FC<ImageWithZoomProps> = ({ src, alt, classNam
                 </div>
             </div>
 
-            <Lightbox
-                open={open}
-                close={() => setOpen(false)}
-                slides={[{ src, alt }]}
-                plugins={[Zoom]}
-                zoom={{
-                    maxZoomPixelRatio: 3,
-                    scrollToZoom: true
-                }}
+            styles={{ container: { zIndex: 9999 } }}
             />
         </>
     );
