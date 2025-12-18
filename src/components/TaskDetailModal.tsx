@@ -4,6 +4,7 @@ import React from 'react';
 import { Task } from '@/types';
 import { X } from 'lucide-react';
 import { AsyncImage } from './AsyncImage';
+import { ImageWithZoom } from './ImageWithZoom';
 
 interface TaskDetailModalProps {
     task: Task;
@@ -72,7 +73,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, isOpen, 
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">Proof of Work</h3>
                         <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                             {task.proofImageUrl ? (
-                                <img
+                                <ImageWithZoom
                                     src={task.proofImageUrl}
                                     alt="Task Proof"
                                     className="w-full h-auto max-h-64 object-contain"

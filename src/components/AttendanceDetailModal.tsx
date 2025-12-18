@@ -4,6 +4,7 @@ import React from 'react';
 import { AttendanceLog } from '@/types';
 import { X, Calendar } from 'lucide-react';
 import { AsyncImage } from './AsyncImage';
+import { ImageWithZoom } from './ImageWithZoom';
 
 interface AttendanceDetailModalProps {
     log: AttendanceLog;
@@ -75,7 +76,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({ lo
                         <h3 className="text-sm font-semibold text-gray-700 mb-2">Proof of Leave</h3>
                         <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                             {log.proofImageUrl ? (
-                                <img
+                                <ImageWithZoom
                                     src={log.proofImageUrl}
                                     alt="Leave Proof"
                                     className="w-full h-auto max-h-64 object-contain"
