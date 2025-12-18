@@ -19,9 +19,10 @@ import { TaskBoard } from '@/components/TaskBoard';
 import { AddTaskModal } from '@/components/AddTaskModal';
 import { TaskFinishModal } from '@/components/TaskFinishModal';
 import { TaskDetailModal } from '@/components/TaskDetailModal';
+import { EditProfileModal } from '@/components/EditProfileModal';
 import { AsyncImage } from '@/components/AsyncImage';
 import Link from 'next/link';
-import { LogOut, Plus, Calendar, CheckCircle2, LayoutGrid, Clock, Sun } from 'lucide-react';
+import { LogOut, Plus, Calendar, CheckCircle2, LayoutGrid, Clock, Sun, Edit2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -34,6 +35,7 @@ export default function Home() {
     const [selectedTaskToFinish, setSelectedTaskToFinish] = useState<Task | null>(null);
     const [viewModalOpen, setViewModalOpen] = useState(false);
     const [selectedTaskToView, setSelectedTaskToView] = useState<Task | null>(null);
+    const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
     useEffect(() => {
         if (!loading) {
@@ -79,8 +81,8 @@ export default function Home() {
         if (!user) return;
         const snapshot = {
             displayName: userProfile?.name || user.displayName || 'Unknown',
-            avatarUrl: userProfile?.avatarUrl,
-            avatarId: userProfile?.avatarId
+            avatarUrl: userProfile?.avatarUrl || null,
+            avatarId: userProfile?.avatarId || null
         };
         await updateDoc(doc(db, "tasks", task.id), {
             status: 'in_progress',
@@ -188,6 +190,13 @@ export default function Home() {
                                 <span className="text-sm font-semibold text-gray-700 hidden md:block">
                                     {userProfile.name}
                                 </span>
+                                <button
+                                    onClick={() => setIsEditProfileOpen(true)}
+                                    className="p-1.5 rounded-full text-gray-300 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                                    title="Edit Profile"
+                                >
+                                    <Edit2 size={14} />
+                                </button>
                             </div>
                         </div>
 
@@ -290,6 +299,12 @@ export default function Home() {
                     onClose={() => setViewModalOpen(false)}
                 />
             )}
+
+            <EditProfileModal
+                isOpen={isEditProfileOpen}
+                onClose={() => setIsEditProfileOpen(false)}
+                currentProfile={userProfile}
+            />
         </div>
     );
 }
